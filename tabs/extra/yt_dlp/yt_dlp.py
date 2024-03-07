@@ -49,7 +49,7 @@ def yt_dlp():
         with gr.Row():
             with gr.Column():
                 gr.Markdown(
-                    value=i18n("Information about the audio file"),
+                    value=("download youtube audio acapella"),
                     visible=True,
                 )
                 yt_output1 = gr.Textbox(label="output") 
