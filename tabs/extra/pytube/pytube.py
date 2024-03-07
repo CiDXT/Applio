@@ -57,5 +57,5 @@ def pytube():
     yt_btn.click(
         fn="convert_yt_to_wav",
         inputs=[yt_url],
-        outputs=[yt_output1, yt_output2],
+        outputs=[vc_output1, vc_output2],
     )
