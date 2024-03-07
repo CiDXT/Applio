@@ -19,7 +19,7 @@ def extra_tab():
     with gr.TabItem(i18n("Processing")):
         processing.processing()
         
-    with gr.TabItem("Processing"):
+    with gr.TabItem("download youtube audio wav"):
         yt_dlp.yt_dlp()
 
     with gr.TabItem(i18n("Audio Analyzer")):
