@@ -47,7 +47,7 @@ def yt_dlp():
                 )
                 
                 result = gr.Audio(label="audio output")
-    yt_btn.click(
+    fetch.click(
         fn=fetch,
         inputs=[url, custom_name],
         outputs=[result],
