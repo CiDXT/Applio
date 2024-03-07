@@ -38,17 +38,25 @@ def convert_yt_to_wav(url):
 
 
 
-      with gr.TabItem("Youtube"):
-        gr.Markdown("## Convertir video de Youtube a audio")
+def yt_dlp():
+    with gr.Column():
+        gr.Markdown(
+            "Tool inspired in the original [simpleRVC](https://huggingface.co/spaces/juuxn/SimpleRVC) code."
+        )
+        yt_url = gr.Textbox(label="Url  video:", placeholder="https://youtu.be/iN0-dRNsmRM?si=42PgawH73GIrvYLs")
+        yt_btn = gr.Button(value="Convert")
+    with gr.Column():
         with gr.Row():
-            yt_url = gr.Textbox(
-                label="Url del video:",
-                placeholder="https://www.youtube.com/watch?v=3vEiqil5d3Q"
-            )
-        yt_btn = gr.Button(value="Convertir")
+            with gr.Column():
+                gr.Markdown(
+                    value=i18n("Information about the audio file"),
+                    visible=True,
+                )
+                yt_output1 = gr.Textbox(label="output") 
+                yt_output2 = gr.Audio(label="audio output")
                 
-        with gr.Row():
-            yt_output1 = gr.Textbox(label="Salida")
-            yt_output2 = gr.Audio(label="Audio de salida")   
-            
-        yt_btn.click(fn=convert_yt_to_wav, inputs=[yt_url], outputs=[yt_output1, yt_output2])
+    get_info_button.click(
+        fn=convert_yt_to_wav,
+        inputs=[yt_url],
+        outputs=[yt_output1, yt_output2],
+    )
