@@ -4,6 +4,7 @@ numpy==1.23.5
 requests==2.31.0
 tqdm
 wget
+pytube
 
 # Audio processing
 faiss-cpu==1.7.3
