@@ -82,7 +82,6 @@ with gr.Blocks(theme="Hev832/EasyAndCool", title="Applio") as Applio:
         extra_tab()
 
     with gr.Tab(i18n("Settings")):
-        presence_tab()
         flask_server_tab()
         theme_tab()
         version_tab()
