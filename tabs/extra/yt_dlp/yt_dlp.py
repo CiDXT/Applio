@@ -1,7 +1,7 @@
 import gradio as gr
 import os
 import pytube
-
+from pydub import AudioSegment
 
 def convert_yt_to_wav(url):
     if not url:
