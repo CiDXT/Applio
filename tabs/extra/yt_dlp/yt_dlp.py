@@ -1,5 +1,4 @@
-No virus
-1.4 kB
+
 import gradio as gr
 import os
 import subprocess
