@@ -1,3 +1,8 @@
+import gradio as gr
+import os
+import pytube
+
+
 def convert_yt_to_wav(url):
     if not url:
         return "First, introduce the video link", None
