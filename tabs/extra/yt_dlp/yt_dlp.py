@@ -55,7 +55,7 @@ def yt_dlp():
                 yt_output1 = gr.Textbox(label="output") 
                 yt_output2 = gr.Audio(label="audio output")
                 
-    get_info_button.click(
+    yt_btn.click(
         fn=convert_yt_to_wav,
         inputs=[yt_url],
         outputs=[yt_output1, yt_output2],
