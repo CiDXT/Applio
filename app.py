@@ -45,7 +45,7 @@ if my_applio:
 else:
     my_applio = "ParityError/Interstellar"
 
-with gr.Blocks(theme=my_applio, title="Applio") as Applio:
+with gr.Blocks(theme="Hev832/EasyAndCool", title="Applio") as Applio:
     gr.Markdown("# Applio")
     gr.Markdown(
         i18n(
