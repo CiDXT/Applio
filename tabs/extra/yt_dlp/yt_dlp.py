@@ -1,50 +1,43 @@
+No virus
+1.4 kB
 import gradio as gr
 import os
-import pytube
-from pydub import AudioSegment
+import subprocess
+from IPython.display import Audio
 
-def convert_yt_to_wav(url):
-    if not url:
-        return "First, introduce the video link", None
+def get_video_title(url):
+    # 使用 yt-dlp 获取视频标题
+    result = subprocess.run(["yt-dlp", "--get-title", url], capture_output=True, text=True)
+    if result.returncode == 0:
+        return result.stdout.strip()
+    else:
+        return "Unknown Video"
+
+def fetch(url, custom_name, ext):
+    title = get_video_title(url)
+    # 截断标题为一个合理的长度
+    max_length = 50  # 调整为适当的值
+    truncated_title = title[:max_length].strip()
     
-    try:
-        print(f"Converting video {url}...")
-        # Descargar el video utilizando pytube
-        video = pytube.YouTube(url)
-        stream = video.streams.filter(only_audio=True).first()
-        video_output_folder = os.path.join(f"yt_videos")  # Ruta de destino de la carpeta
-        audio_output_folder = 'assets/audios'
+    filename = f"{custom_name}.{ext}" if custom_name else f"{truncated_title}.{ext}"
+    opts = {
+        "wav": ["-f", "ba", "-x", "--audio-format", "wav"],
+    }[ext]
+    command = ["yt-dlp"] + opts + [url, "-o", filename]
+    subprocess.run(command)
 
-        print("Downloading video")
-        video_file_path = stream.download(output_path=video_output_folder)
-        print(video_file_path)
-
-        file_name = os.path.basename(video_file_path)
-        
-        audio_file_path = os.path.join(audio_output_folder, file_name.replace('.mp4','.wav'))
-        # convert mp4 to wav
-        print("Converting to wav")
-        sound = AudioSegment.from_file(video_file_path,format="mp4")
-        sound.export(audio_file_path, format="wav")
-        
-        if os.path.exists(video_file_path):
-            os.remove(video_file_path)
-            
-        return "Success", audio_file_path
-    except ConnectionResetError as cre:
-        return "The connection has been lost, please reload or try again later.", None
-    except Exception as e:
-        return str(e), None
+    return filename
 
 
 
 def yt_dlp():
     with gr.Column():
         gr.Markdown(
-            "Tool inspired in the original [simpleRVC](https://huggingface.co/spaces/juuxn/SimpleRVC) code."
+            "Tool inspired in the original [youtube_downloader](https://huggingface.co/spaces/Hev832/youtube_downloader) code."
         )
-        yt_url = gr.Textbox(label="Url  video:", placeholder="https://youtu.be/iN0-dRNsmRM?si=42PgawH73GIrvYLs")
-        yt_btn = gr.Button(value="Convert")
+        url = gr.Textbox(label="Url  video:", placeholder="https://youtu.be/iN0-dRNsmRM?si=42PgawH73GIrvYLs")
+        custom_name = gr.Textbox(label="file name:", placeholder="Defaults to video title")
+        ext = gr.Button(value="Convert")
     with gr.Column():
         with gr.Row():
             with gr.Column():
@@ -52,11 +45,10 @@ def yt_dlp():
                     value=("download youtube audio acapella"),
                     visible=True,
                 )
-                yt_output1 = gr.Textbox(label="output") 
-                yt_output2 = gr.Audio(label="audio output")
                 
+                result = gr.Audio(label="audio output")
     yt_btn.click(
-        fn=convert_yt_to_wav,
-        inputs=[yt_url],
-        outputs=[yt_output1, yt_output2],
+        fn=fetch,
+        inputs=[url, custom_name],
+        outputs=[result],
     )
