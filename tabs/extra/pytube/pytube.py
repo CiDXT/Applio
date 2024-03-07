@@ -1,7 +1,6 @@
-
+import gradio as gr
 import pytube
 import os
-import gradio as gr
 from pydub import AudioSegment
 
 
@@ -52,10 +51,11 @@ def pytube():
                     value=("download youtube audio acapella"),
                     visible=True,
                 )
-                vc_output1 = gr.Textbox(label="information")
-                vc_output2 = gr.Audio(label="audio output")
+                yt_output1 = gr.Textbox(label="information")
+                yt_output2 = gr.Audio(label="audio output")
+                
     yt_btn.click(
         fn="convert_yt_to_wav",
         inputs=[yt_url],
-        outputs=[vc_output1, vc_output2],
+        outputs=[yt_output1, yt_output2],
     )
