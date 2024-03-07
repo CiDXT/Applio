@@ -1,16 +1,16 @@
 
-import gradio as gr
+import pytube
 import os
-import subprocess
-from IPython.display import Audio
+import gradio as gr
+from pydub import AudioSegment
 
-def get_video_title(url):
- def convert_yt_to_wav(url):
+
+def convert_yt_to_wav(url):
     if not url:
         return "Primero introduce el enlace del video", None
     
     try:
-        print(f"converting video {url}...")
+        print(f"convetring video {url}...")
         # Descargar el video utilizando pytube
         video = pytube.YouTube(url)
         stream = video.streams.filter(only_audio=True).first()
@@ -34,19 +34,17 @@ def get_video_title(url):
             
         return "Success", audio_file_path
     except ConnectionResetError as cre:
-        return "Connection has been lost, recharge or try again later.", None
+        return "Se ha perdido la conexión, recarga o reintentalo nuevamente más tarde.", None
     except Exception as e:
         return str(e), None
-
 
 def pytube():
     with gr.Column():
         gr.Markdown(
             "Tool inspired in the original [SimpleRVC](https://huggingface.co/spaces/juuxn/SimpleRVC) code."
         )
-        url = gr.Textbox(label="Url  video:", placeholder="https://youtu.be/iN0-dRNsmRM?si=42PgawH73GIrvYLs")
-        custom_name = gr.Textbox(label="file name:", placeholder="Defaults to video title")
-        ext = gr.Button(value="Convert")
+        yt_url = gr.Textbox(label="Url  video:", placeholder="https://youtu.be/iN0-dRNsmRM?si=42PgawH73GIrvYLs")
+        yt_btn = gr.Button(value="Convert")
     with gr.Column():
         with gr.Row():
             with gr.Column():
@@ -56,8 +54,8 @@ def pytube():
                 )
                 vc_output1 = gr.Textbox(label="information")
                 vc_output2 = gr.Audio(label="audio output")
-    command.click(
-        fn=fetch,
-        inputs=[url, custom_name],
-        outputs=[result],
+    yt_btn.click(
+        fn="convert_yt_to_wav",
+        inputs=[yt_url],
+        outputs=[yt_output1, yt_output2],
     )
