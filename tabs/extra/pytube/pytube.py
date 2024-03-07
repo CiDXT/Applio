@@ -55,7 +55,7 @@ def pytube():
                 yt_output2 = gr.Audio(label="audio output")
                 
     yt_btn.click(
-        fn="convert_yt_to_wav",
+        fn=convert_yt_to_wav,
         inputs=[yt_url],
         outputs=[yt_output1, yt_output2],
     )
